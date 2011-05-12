@@ -1,7 +1,6 @@
 import bge
 from math import sqrt
 
-
 def main():
     
     # CONSTANTE
@@ -9,7 +8,7 @@ def main():
     MOTOR_MAX = 5
     RAYON = 1
     RATIO = sqrt(2)/2
-    LACET = 0.5
+    LACET = 1
     F = (1.3 * GRAVITY)/4
     FDOWN = (0.2 * GRAVITY)/4
     
@@ -58,18 +57,18 @@ def main():
         ForceRearRight += -FDOWN
         ForceRearLeft += -FDOWN
         
-    if keyD.positive: #TODO
-        ForceFrontRight = F 
-        ForceFrontLeft = ForceFrontLeft - 1
-        ForceRearRight = ForceRearRight - 1
-        ForceRearLeft = ForceRearLeft - 1
+    if keyQ.positive: 
+        ForceFrontRight += 1
+        ForceFrontLeft -= 1
+        ForceRearRight -= 1
+        ForceRearLeft += 1
         
-    if keyQ.positive: #TODO
-        ForceFrontRight = ForceFrontRight - 1 
-        ForceFrontLeft = ForceFrontLeft - 1
-        ForceRearRight = ForceRearRight - 1
-        ForceRearLeft = ForceRearLeft - 1    
-            
+    if keyD.positive:
+        ForceFrontRight -= 1
+        ForceFrontLeft += 1
+        ForceRearRight += 1
+        ForceRearLeft -= 1
+        
     if keyUp.positive:
         ForceRearRight += F
         ForceRearLeft += F
@@ -85,6 +84,16 @@ def main():
     if keyRight.positive:
         ForceFrontLeft += F
         ForceRearLeft += F
+        
+    # BASIC MODEL
+    if key4.positive:
+        ForceFrontLeft += F
+    if key5.positive:
+        ForceFrontRight += F
+    if key1.positive:
+        ForceRearLeft += F
+    if key2.positive:
+        ForceRearRight += F    
     
     # NO KEY MOTION
     MotFrontLeft.torque = [0, 0, 0]
@@ -104,31 +113,17 @@ def main():
         MotRearRight.force = [0, 0, GRAVITY/4]
     
     # FINAL MOTION
-    if MODE == "Basic":
-        right = left = 0
-        if key4.positive:
-            MotFrontLeft.force = [0, 0, MOTOR_MAX]
-            MotFrontLeft.torque = [MOTOR_MAX * RATIO, MOTOR_MAX * RATIO, -LACET]
-        if key5.positive:
-            MotFrontRight.force = [0, 0, MOTOR_MAX]
-            MotFrontRight.torque = [MOTOR_MAX * RATIO, -1 * MOTOR_MAX * RATIO, LACET]
-        if key1.positive:
-            MotRearLeft.force = [0, 0, MOTOR_MAX]
-            MotRearLeft.torque = [-1 * MOTOR_MAX * RATIO, MOTOR_MAX * RATIO, LACET]
-        if key2.positive:
-            MotRearRight.force = [0, 0, MOTOR_MAX]
-            MotRearRight.torque = [-1 * MOTOR_MAX * RATIO, -1 * MOTOR_MAX * RATIO, -LACET]
-    else:
+    
         MotFrontLeft.force = [0, 0, ForceFrontLeft] 
-        MotFrontLeft.torque = [ForceFrontLeft * RATIO, ForceFrontLeft * RATIO, -LACET]
+        MotFrontLeft.torque = [ForceFrontLeft * RATIO, ForceFrontLeft * RATIO, - ForceFrontLeft * LACET]
         
         MotFrontRight.force = [0, 0, ForceFrontRight]
-        MotFrontRight.torque = [ForceFrontRight * RATIO, -1 * ForceFrontRight * RATIO, LACET] 
+        MotFrontRight.torque = [ForceFrontRight * RATIO, -1 * ForceFrontRight * RATIO, ForceFrontRight * LACET] 
         
         MotRearRight.force = [0, 0, ForceRearRight]
-        MotRearRight.torque = [-1 * ForceRearRight * RATIO, -1 * ForceRearRight * RATIO, -LACET]
+        MotRearRight.torque = [-1 * ForceRearRight * RATIO, -1 * ForceRearRight * RATIO, -ForceRearRight * LACET]
          
         MotRearLeft.force = [0, 0, ForceRearLeft]
-        MotRearLeft.torque = [-1 * ForceRearLeft * RATIO, ForceRearLeft * RATIO, LACET] 
+        MotRearLeft.torque = [-1 * ForceRearLeft * RATIO, ForceRearLeft * RATIO, ForceRearLeft * LACET] 
 
 main()
