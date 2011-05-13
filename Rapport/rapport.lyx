@@ -1,0 +1,323 @@
+#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass article
+\begin_preamble
+\usepackage{listings}
+\lstset{language=Python}
+\end_preamble
+\use_default_options true
+\language french
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref true
+\pdf_title "Simulation de quadricoptère avec Blender"
+\pdf_author "Benoît Saccomano & Michael Muré"
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle true
+\papersize a4paper
+\use_geometry true
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\leftmargin 3cm
+\rightmargin 3cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle fancy
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Simulation de quadricoptère avec Blender
+\end_layout
+
+\begin_layout Author
+Benoît Saccomano & Michael Muré
+\end_layout
+
+\begin_layout Date
+13/05/2011
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Section
+Modelisation
+\end_layout
+
+\begin_layout Section
+Contenu de la scène
+\end_layout
+
+\begin_layout Section
+Simulation physique du quadricopère
+\end_layout
+
+\begin_layout Subsection
+Principe global
+\end_layout
+
+\begin_layout Subsection
+Comportement simple
+\end_layout
+
+\begin_layout Subsection
+Comportement évolué
+\end_layout
+
+\begin_layout Section
+HUD
+\end_layout
+
+\begin_layout Subsection
+Principe global
+\end_layout
+
+\begin_layout Standard
+Le HUD (head's up display) que nous avons implémenté est constitué d'un
+ indicateur de vitesse et d'un indicateur d'altitude.
+ Le principe est relativement simple.
+ Pour chaque indicateur, deux plans sont positionné parallèlement à la camera
+ et parenté à elle de sorte que si la caméra bouge, les indicateurs suivent.
+ Ces plans sont texturés avec les deux textures suivantes:
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename /home/michael/Bureau/projet quadricoptère/HUD/fondaltimetre.png
+	lyxscale 50
+	scale 50
+	rotateOrigin center
+
+\end_inset
+
+ 
+\begin_inset Graphics
+	filename /home/michael/Bureau/projet quadricoptère/HUD/aiguille.png
+	lyxscale 50
+	scale 50
+	rotateOrigin center
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Les matériaux pour ces deux plans sont un peu particuliers:
+\end_layout
+
+\begin_layout Itemize
+Activation de la transparence (la texture affecte les canaux color et alpha,
+ valeur de alpha par défaut: 0).
+\end_layout
+
+\begin_layout Itemize
+Matériau en shadeless, c'est à dire pas de calcul d'ombrage ou d'eclairage.
+ Seule les couleurs de la texture sont affichés.
+\end_layout
+
+\begin_layout Standard
+Le centre de l'objet aiguille est placé au niveau de l'axe de rotation de
+ l'aiguille, de sorte qu'on ai juste à appliquer une rotation à l'aiguille
+ pour fixer la valeur.
+ Les afficheurs prennent vie grace à un script python simple que nous allons
+ voir dans la partie suivante.
+ Le réseau logique utilisé est le suivant:
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename logic_HUD.png
+	lyxscale 50
+	width 100col%
+	rotateOrigin center
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Nous avons donc:
+\end_layout
+
+\begin_layout Itemize
+Un sensor 
+\begin_inset Quotes eld
+\end_inset
+
+Always
+\begin_inset Quotes erd
+\end_inset
+
+ qui active le script à intervals réguliers
+\end_layout
+
+\begin_layout Itemize
+Un controller 
+\begin_inset Quotes eld
+\end_inset
+
+Python
+\begin_inset Quotes erd
+\end_inset
+
+ avec notre script
+\end_layout
+
+\begin_layout Itemize
+Un actuator 
+\begin_inset Quotes eld
+\end_inset
+
+Motion
+\begin_inset Quotes erd
+\end_inset
+
+ qui ne sert strictement à rien, si ce n'est d'avoir un graph valide (sinon
+ le script ne se déclencherai pas).
+\end_layout
+
+\begin_layout Subsection
+Script python
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "breaklines=true,language=Python,numbers=left"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+import bge 
+\end_layout
+
+\begin_layout Plain Layout
+
+from mathutils import Matrix
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+# récupère la scène et la liste des objets
+\end_layout
+
+\begin_layout Plain Layout
+
+scene = bge.logic.getCurrentScene()
+\end_layout
+
+\begin_layout Plain Layout
+
+List = scene.objects
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+# récupère le controleur, puis l'objet aiguille qui détient ce controleur
+\end_layout
+
+\begin_layout Plain Layout
+
+cont = bge.logic.getCurrentController()
+\end_layout
+
+\begin_layout Plain Layout
+
+aiguille = cont.owner
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+# récupère l'objet quadricoptère dans la liste des objets de la scène, puis
+ sa vitesse
+\end_layout
+
+\begin_layout Plain Layout
+
+value = List['Quadri'].worldLinearVelocity.length
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+# affecte une matrice de rotation à l'objet aiguille, calculée d'après la
+ valeur à afficher
+\end_layout
+
+\begin_layout Plain Layout
+
+aiguille.localOrientation = Matrix.Rotation(-value / 10.0, 4, 'Z').to_3x3()
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Conclusion
+\end_layout
+
+\end_body
+\end_document
