@@ -13,7 +13,7 @@ def main():
     F = (1.3 * GRAVITY)/4
     FDOWN = (0.2 * GRAVITY)/4
     
-    MODE = "Ba"
+    MODE = "Basic"
     
     # INIT
     cont = bge.logic.getCurrentController()
