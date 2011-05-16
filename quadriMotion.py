@@ -5,14 +5,17 @@ def main():
     
     # CONSTANTE
     GRAVITY = 9.800
-    MOTOR_MAX = 5
-    RAYON = 1
     RATIO = sqrt(2)/2
-    LACET = 1
-    F = (1.3 * GRAVITY)/4
-    FDOWN = (0.2 * GRAVITY)/4
     
-    MODE = "Bac"
+    FORCE_LACET = 1
+    FORCE_UP = (1.3 * GRAVITY)/4
+    FORCE_DOWN = (0.2 * GRAVITY)/4
+    FORCE_TANGAGE = 5
+    FORCE_MOTOR_MAX = 5
+    
+    # Mode Basic ou Advanced:
+    # Pour le moment, ne change que la force de chute quand aucune touche n'est appuyee
+    MODE = "Basic"
     
     # INIT
     cont = bge.logic.getCurrentController()
@@ -22,6 +25,7 @@ def main():
     ForceFrontLeft = 0
     ForceRearRight = 0
     ForceRearLeft = 0
+    key_pressed = False
     
 
     keyUp = cont.sensors['Up']
@@ -46,84 +50,93 @@ def main():
     
     # BEHAVIOR MODEL
     if keyZ.positive:
-        ForceFrontRight += F
-        ForceFrontLeft += F
-        ForceRearRight += F
-        ForceRearLeft += F
+        ForceFrontRight += FORCE_UP
+        ForceFrontLeft += FORCE_UP
+        ForceRearRight += FORCE_UP
+        ForceRearLeft += FORCE_UP
+        key_pressed = True
         
     if keyS.positive:
-        ForceFrontRight += -FDOWN
-        ForceFrontLeft += -FDOWN
-        ForceRearRight += -FDOWN
-        ForceRearLeft += -FDOWN
+        ForceFrontRight -= FORCE_DOWN
+        ForceFrontLeft -= FORCE_DOWN
+        ForceRearRight -= FORCE_DOWN
+        ForceRearLeft -= FORCE_DOWN
+        key_pressed = True
         
     if keyQ.positive: 
         ForceFrontRight += 1
         ForceFrontLeft -= 1
         ForceRearRight -= 1
         ForceRearLeft += 1
+        key_pressed = True
         
     if keyD.positive:
         ForceFrontRight -= 1
         ForceFrontLeft += 1
         ForceRearRight += 1
         ForceRearLeft -= 1
+        key_pressed = True
         
     if keyUp.positive:
-        ForceRearRight += F
-        ForceRearLeft += F
+        ForceRearRight += FORCE_TANGAGE
+        ForceRearLeft += FORCE_TANGAGE
+        key_pressed = True
 
     if keyDown.positive:
-        ForceFrontRight += F 
-        ForceFrontLeft += F
+        ForceFrontRight += FORCE_TANGAGE
+        ForceFrontLeft += FORCE_TANGAGE
+        key_pressed = True
 
     if keyLeft.positive:
-        ForceFrontRight += F 
-        ForceRearRight += F
+        ForceFrontRight += FORCE_TANGAGE
+        ForceRearRight += FORCE_TANGAGE
+        key_pressed = True
 
     if keyRight.positive:
-        ForceFrontLeft += F
-        ForceRearLeft += F
+        ForceFrontLeft += FORCE_TANGAGE
+        ForceRearLeft += FORCE_TANGAGE
+        key_pressed = True
         
     # BASIC MODEL
     if key4.positive:
-        ForceFrontLeft += F
+        ForceFrontLeft += FORCE_MOTOR_MAX
+        key_pressed = True
     if key5.positive:
-        ForceFrontRight += F
+        ForceFrontRight += FORCE_MOTOR_MAX
+        key_pressed = True
     if key1.positive:
-        ForceRearLeft += F
+        ForceRearLeft += FORCE_MOTOR_MAX
+        key_pressed = True
     if key2.positive:
-        ForceRearRight += F    
+        ForceRearRight += FORCE_MOTOR_MAX
+        key_pressed = True
     
     # NO KEY MOTION
-    MotFrontLeft.torque = [0, 0, 0]
-    MotFrontRight.torque = [0, 0, 0]
-    MotRearLeft.torque = [0, 0, 0]
-    MotRearRight.torque = [0, 0, 0]
     
-    if MODE == "Basic":
-        MotFrontLeft.force = [0, 0, 0]
-        MotFrontRight.force = [0, 0, 0]
-        MotRearLeft.force = [0, 0, 0]
-        MotRearRight.force = [0, 0, 0]
-    else:
-        MotFrontLeft.force = [0, 0, GRAVITY/4]
-        MotFrontRight.force = [0, 0, GRAVITY/4]
-        MotRearLeft.force = [0, 0, GRAVITY/4]
-        MotRearRight.force = [0, 0, GRAVITY/4]
+    if not key_pressed:
+        if MODE == "Basic":
+            ForceFrontLeft = 0
+            ForceFrontRight = 0
+            ForceRearLeft = 0
+            ForceRearRight = 0
+        else:
+            ForceFrontLeft = 0.5 * GRAVITY/4
+            ForceFrontRight = 0.5 * GRAVITY/4
+            ForceRearLeft = 0.5 * GRAVITY/4
+            ForceRearRight = 0.5 * GRAVITY/4
     
     # FINAL MOTION
     
-        MotFrontLeft.force = [0, 0, ForceFrontLeft] 
-        MotFrontLeft.torque = [ForceFrontLeft * RATIO, ForceFrontLeft * RATIO, - ForceFrontLeft * LACET]
-        
-        MotFrontRight.force = [0, 0, ForceFrontRight]
-        MotFrontRight.torque = [ForceFrontRight * RATIO, -1 * ForceFrontRight * RATIO, ForceFrontRight * LACET] 
-        
-        MotRearRight.force = [0, 0, ForceRearRight]
-        MotRearRight.torque = [-1 * ForceRearRight * RATIO, -1 * ForceRearRight * RATIO, -ForceRearRight * LACET]
-         
-        MotRearLeft.force = [0, 0, ForceRearLeft]
-        MotRearLeft.torque = [-1 * ForceRearLeft * RATIO, ForceRearLeft * RATIO, ForceRearLeft * LACET] 
+    MotFrontLeft.force = [0, 0, ForceFrontLeft]
+    MotFrontLeft.torque = [ForceFrontLeft * RATIO, ForceFrontLeft * RATIO, - ForceFrontLeft * FORCE_LACET]
+    
+    MotFrontRight.force = [0, 0, ForceFrontRight]
+    MotFrontRight.torque = [ForceFrontRight * RATIO, -1 * ForceFrontRight * RATIO, ForceFrontRight * FORCE_LACET]
+    
+    MotRearRight.force = [0, 0, ForceRearRight]
+    MotRearRight.torque = [-1 * ForceRearRight * RATIO, -1 * ForceRearRight * RATIO, -ForceRearRight * FORCE_LACET]
+     
+    MotRearLeft.force = [0, 0, ForceRearLeft]
+    MotRearLeft.torque = [-1 * ForceRearLeft * RATIO, ForceRearLeft * RATIO, ForceRearLeft * FORCE_LACET]
 
 main()
