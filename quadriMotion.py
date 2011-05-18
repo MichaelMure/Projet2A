@@ -12,6 +12,7 @@ def main():
     FORCE_DOWN = (0.2 * GRAVITY)/4
     FORCE_TANGAGE = 5
     FORCE_MOTOR_MAX = 5
+    FORCE_UP_JOYSTICK = 10
     
     # Mode Basic, Advanced, Joystick:
     # Pour le moment, ne change que la force de chute quand aucune touche n'est appuyee
@@ -43,7 +44,7 @@ def main():
     key1 = cont.sensors['1']
     key2 = cont.sensors['2']
     
-    JoystickUp = cont.sensors['JoystickUp']
+    Joystick = cont.sensors['Joystick']
     
     MotFrontRight = cont.actuators['MotFrontRight']
     MotFrontLeft = cont.actuators['MotFrontLeft']
@@ -102,38 +103,42 @@ def main():
    
     # JOYSTICK
     if MODE == "Joystick":
+        # FRONT/BACK
+        front = Joystick.axisValues[1]/65534
+        ForceRearRight -= front * FORCE_TANGAGE
+        ForceRearLeft -= front * FORCE_TANGAGE
+        ForceFrontRight += front * FORCE_TANGAGE
+        ForceFrontLeft += front * FORCE_TANGAGE
+        key_pressed = True
         
-        # FRONT
-        if JoystickUp.axisValues[1] < -20000:
-            ForceRearRight += FORCE_TANGAGE
-            ForceRearLeft += FORCE_TANGAGE
-            key_pressed = True
+        # LEFT/RIGHT
+        left = Joystick.axisValues[0]/65534
+        ForceRearRight -= left * FORCE_TANGAGE
+        ForceRearLeft += left * FORCE_TANGAGE
+        ForceFrontRight -= left * FORCE_TANGAGE
+        ForceFrontLeft += left * FORCE_TANGAGE
+        key_pressed = True
         
-        # BACK    
-        if JoystickUp.axisValues[1] > 20000:
-            ForceFrontRight += FORCE_TANGAGE
-            ForceFrontLeft += FORCE_TANGAGE
-            key_pressed = True
+        # LACET
+        lacet = Joystick.axisValues[2]/65534
+        ForceRearRight += lacet * FORCE_TANGAGE
+        ForceRearLeft -= lacet * FORCE_TANGAGE
+        ForceFrontRight -= lacet * FORCE_TANGAGE
+        ForceFrontLeft += lacet * FORCE_TANGAGE
+        key_pressed = True
             
-        # LEFT   
-        if JoystickUp.axisValues[0] < -20000:
-            ForceFrontRight += FORCE_TANGAGE
-            ForceRearRight += FORCE_TANGAGE
-            key_pressed = True  
-           
-        # RIGHT   
-        if JoystickUp.axisValues[0] > 20000:
-            ForceFrontLeft += FORCE_TANGAGE
-            ForceRearLeft += FORCE_TANGAGE
-            key_pressed = True     
-        
         # DOWN (with the gaz knob)
-        if JoystickUp.axisValues[3] < -20000:
-            ForceFrontRight += FORCE_UP
-            ForceFrontLeft += FORCE_UP
-            ForceRearRight += FORCE_UP
-            ForceRearLeft += FORCE_UP
-            key_pressed = True
+        up = Joystick.axisValues[3]/65534
+        toto = -up + 0.5
+        ForceFrontRight += toto * FORCE_UP_JOYSTICK
+        ForceFrontLeft += toto * FORCE_UP_JOYSTICK
+        ForceRearRight += toto * FORCE_UP_JOYSTICK
+        ForceRearLeft += toto * FORCE_UP_JOYSTICK
+        key_pressed = True
+        print(toto)
+        
+            
+           
         
     # BASIC MODEL
     if key4.positive:
