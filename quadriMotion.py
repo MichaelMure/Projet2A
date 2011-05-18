@@ -13,9 +13,9 @@ def main():
     FORCE_TANGAGE = 5
     FORCE_MOTOR_MAX = 5
     
-    # Mode Basic ou Advanced:
+    # Mode Basic, Advanced, Joystick:
     # Pour le moment, ne change que la force de chute quand aucune touche n'est appuyee
-    MODE = "Basic"
+    MODE = "Joystick"
     
     # INIT
     cont = bge.logic.getCurrentController()
@@ -42,6 +42,8 @@ def main():
     key5 = cont.sensors['5']
     key1 = cont.sensors['1']
     key2 = cont.sensors['2']
+    
+    JoystickUp = cont.sensors['JoystickUp']
     
     MotFrontRight = cont.actuators['MotFrontRight']
     MotFrontLeft = cont.actuators['MotFrontLeft']
@@ -97,6 +99,42 @@ def main():
         ForceRearLeft += FORCE_TANGAGE
         key_pressed = True
         
+   
+    # JOYSTICK
+    if MODE == "Joystick":
+        
+        # FRONT
+        if JoystickUp.axisValues[1] < -20000:
+            ForceRearRight += FORCE_TANGAGE
+            ForceRearLeft += FORCE_TANGAGE
+            key_pressed = True
+        
+        # BACK    
+        if JoystickUp.axisValues[1] > 20000:
+            ForceFrontRight += FORCE_TANGAGE
+            ForceFrontLeft += FORCE_TANGAGE
+            key_pressed = True
+            
+        # LEFT   
+        if JoystickUp.axisValues[0] < -20000:
+            ForceFrontRight += FORCE_TANGAGE
+            ForceRearRight += FORCE_TANGAGE
+            key_pressed = True  
+           
+        # RIGHT   
+        if JoystickUp.axisValues[0] > 20000:
+            ForceFrontLeft += FORCE_TANGAGE
+            ForceRearLeft += FORCE_TANGAGE
+            key_pressed = True     
+        
+        # DOWN (with the gaz knob)
+        if JoystickUp.axisValues[3] < -20000:
+            ForceFrontRight += FORCE_UP
+            ForceFrontLeft += FORCE_UP
+            ForceRearRight += FORCE_UP
+            ForceRearLeft += FORCE_UP
+            key_pressed = True
+        
     # BASIC MODEL
     if key4.positive:
         ForceFrontLeft += FORCE_MOTOR_MAX
@@ -126,7 +164,6 @@ def main():
             ForceRearRight = 0.5 * GRAVITY/4
     
     # FINAL MOTION
-    
     MotFrontLeft.force = [0, 0, ForceFrontLeft]
     MotFrontLeft.torque = [ForceFrontLeft * RATIO, ForceFrontLeft * RATIO, - ForceFrontLeft * FORCE_LACET]
     
