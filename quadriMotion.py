@@ -12,7 +12,7 @@ def main():
     FORCE_DOWN = (0.2 * GRAVITY)/4
     FORCE_TANGAGE = 5
     FORCE_MOTOR_MAX = 5
-    FORCE_UP_JOYSTICK = 10
+    FORCE_UP_JOYSTICK = 4
     
     # Mode Basic, Advanced, Joystick:
     # Pour le moment, ne change que la force de chute quand aucune touche n'est appuyee
@@ -129,13 +129,12 @@ def main():
             
         # DOWN (with the gaz knob)
         up = Joystick.axisValues[3]/65534
-        toto = -up + 0.5
-        ForceFrontRight += toto * FORCE_UP_JOYSTICK
-        ForceFrontLeft += toto * FORCE_UP_JOYSTICK
-        ForceRearRight += toto * FORCE_UP_JOYSTICK
-        ForceRearLeft += toto * FORCE_UP_JOYSTICK
+        uppos = -up + 0.5
+        ForceFrontRight += uppos * FORCE_UP_JOYSTICK
+        ForceFrontLeft += uppos * FORCE_UP_JOYSTICK
+        ForceRearRight += uppos * FORCE_UP_JOYSTICK
+        ForceRearLeft += uppos * FORCE_UP_JOYSTICK
         key_pressed = True
-        print(toto)
         
             
            
