@@ -1,0 +1,18 @@
+<ENCODAGE>utf-8</ENCODAGE>
+<TITRE>Quadricoptère sous Blender</TITRE>
+<ELEVE>Michael MURE</ELEVE>
+<ELEVE>Benoît SACCOMANO</ELEVE>
+<ENSEIGNANT>Denis LIENHARDT</ENSEIGNANT>
+<CLE>Blender, Quadricopètre, 3D, Modélisation, Python</CLE>
+<SUJET></SUJET>
+<REALISATION>
+La première étape du projet fut la réalisation d'un modèle 3D du quadricoptère. Pour ça, nous avons utilisé les différents outils que propose Blender quant à la création d'un objet 3D. Tel que le modifier Mirror.
+La deuxième partie du projet consiste à donner un comportement dynamique et relativement réaliste à notre quadricoptère.
+<FIGURE>
+	<LEGENDE></LEGENDE>
+	<FICHIER></FICHIER>
+</FIGURE>
+paragraphe trokoul toujours sur une ligne
+</REALISATION>
+<CONTACT>michael.mure@uha.fr</CONTACT>
+<CONTACT>benoit.saccomano@gmail.com</CONTACT>
