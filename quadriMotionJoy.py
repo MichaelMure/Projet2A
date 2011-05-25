@@ -13,6 +13,8 @@ def main():
     FORCE_TANGAGE = 5
     FORCE_MOTOR_MAX = 5
     FORCE_UP_JOYSTICK = 4
+    TEST = 10
+    THRESHOLD = 5000
     
     # Mode Basic, Advanced, Joystick:
     # Pour le moment, ne change que la force de chute quand aucune touche n'est appuyee
@@ -21,10 +23,6 @@ def main():
     # INIT
     cont = bge.logic.getCurrentController()
     own = cont.owner
-    anglesVelocity = own.worldAngularVelocity
-    angleFront = anglesVelocity[0]
-    angleLeft = anglesVelocity[1]
-    angleLacet = anglesVelocity[2]
     
     ForceFrontRight = 0
     ForceFrontLeft = 0
@@ -108,32 +106,58 @@ def main():
     # JOYSTICK
     if MODE == "Joystick":
         # FRONT/BACK
-        front = Joystick.axisValues[1]/65534
-        ForceRearRight -= front * FORCE_TANGAGE
-        ForceRearLeft -= front * FORCE_TANGAGE
-        ForceFrontRight += front * FORCE_TANGAGE
-        ForceFrontLeft += front * FORCE_TANGAGE
-        if Joystick.axisValues[1] < -15000 or Joystick.axisValues[1] > 15000: 
+        if (Joystick.axisValues[1] >= THRESHOLD):         
+            front = ((Joystick.axisValues[1] - THRESHOLD)*(32767/(32767 - THRESHOLD)))/65534
+            ForceRearRight -= front * FORCE_TANGAGE
+            ForceRearLeft -= front * FORCE_TANGAGE
+            ForceFrontRight += front * FORCE_TANGAGE
+            ForceFrontLeft += front * FORCE_TANGAGE
             key_pressed = True
+        elif(Joystick.axisValues[1] <= -THRESHOLD):
+            front = ((Joystick.axisValues[1] + THRESHOLD)*(32768/(32768 + THRESHOLD)))/65534
+            ForceRearRight -= front * FORCE_TANGAGE
+            ForceRearLeft -= front * FORCE_TANGAGE
+            ForceFrontRight += front * FORCE_TANGAGE
+            ForceFrontLeft += front * FORCE_TANGAGE
+            key_pressed = True
+        else: 
+            key_pressed = False   
         
         # LEFT/RIGHT
-        left = (Joystick.axisValues[0]/65534)
-        ForceRearRight -= left * FORCE_TANGAGE
-        ForceRearLeft += left * FORCE_TANGAGE
-        ForceFrontRight -= left * FORCE_TANGAGE
-        ForceFrontLeft += left * FORCE_TANGAGE
-        if Joystick.axisValues[0] < -15000 or Joystick.axisValues[0] > 15000: 
+        if (Joystick.axisValues[0] >= THRESHOLD):         
+            left = ((Joystick.axisValues[0] - THRESHOLD)*(32767/(32767 - THRESHOLD)))/65534
+            ForceRearRight -= left * FORCE_TANGAGE
+            ForceRearLeft += left * FORCE_TANGAGE
+            ForceFrontRight -= left * FORCE_TANGAGE
+            ForceFrontLeft += left * FORCE_TANGAGE
             key_pressed = True
-        
+        elif(Joystick.axisValues[0] <= -THRESHOLD):
+            left = ((Joystick.axisValues[0] + THRESHOLD)*(32768/(32768 + THRESHOLD)))/65534
+            ForceRearRight -= left * FORCE_TANGAGE
+            ForceRearLeft += left * FORCE_TANGAGE
+            ForceFrontRight -= left * FORCE_TANGAGE
+            ForceFrontLeft += left * FORCE_TANGAGE
+            key_pressed = True
+        else: 
+            key_pressed = False 
+
         # LACET
-        lacet = Joystick.axisValues[2]/65534
-        lacetstd = lacet + 0.02 
-        ForceRearRight += lacetstd * FORCE_TANGAGE
-        ForceRearLeft -= lacetstd * FORCE_TANGAGE
-        ForceFrontRight -= lacetstd * FORCE_TANGAGE
-        ForceFrontLeft += lacetstd * FORCE_TANGAGE
-        if Joystick.axisValues[2] < -15000 or Joystick.axisValues[2] > 15000: 
+        if (Joystick.axisValues[2] >= THRESHOLD):         
+            lacet = ((Joystick.axisValues[2] - THRESHOLD)*(32767/(32767 - THRESHOLD)))/65534
+            ForceRearRight += lacet * FORCE_TANGAGE
+            ForceRearLeft -= lacet * FORCE_TANGAGE
+            ForceFrontRight -= lacet * FORCE_TANGAGE
+            ForceFrontLeft += lacet * FORCE_TANGAGE
             key_pressed = True
+        elif(Joystick.axisValues[2] <= -THRESHOLD):
+            lacet = ((Joystick.axisValues[2] + THRESHOLD)*(32768/(32768 + THRESHOLD)))/65534
+            ForceRearRight += lacet * FORCE_TANGAGE
+            ForceRearLeft -= lacet * FORCE_TANGAGE
+            ForceFrontRight -= lacet * FORCE_TANGAGE
+            ForceFrontLeft += lacet * FORCE_TANGAGE
+            key_pressed = True
+        else:
+            key_pressed = False 
             
         # DOWN (with the gaz knob)
         up = Joystick.axisValues[3]/65534
@@ -149,23 +173,25 @@ def main():
     # NO KEY MOTION
     
     if not key_pressed:
-        if MODE == "Basic":
-            ForceFrontLeft = 0
-            ForceFrontRight = 0
-            ForceRearLeft = 0
-            ForceRearRight = 0
-        else:
-            own.worldAngularVelocity[0] = 0
-            own.worldAngularVelocity[1] = 0
-            own.worldAngularVelocity[2] = 0
-            # own.localOrientation =  [[1,0,0],[0,1,0],[0,0,1]]
-            print(own.localOrientation) 
+        euler = own.localOrientation.to_euler()
+        ForceFrontLeft -= euler.x * FORCE_TANGAGE
+        ForceFrontRight -= euler.x * FORCE_TANGAGE
+        ForceRearLeft +=  euler.x * FORCE_TANGAGE
+        ForceRearRight += euler.x * FORCE_TANGAGE
+        
+        ForceFrontLeft -= euler.y * FORCE_TANGAGE
+        ForceFrontRight += euler.y * FORCE_TANGAGE
+        ForceRearLeft -=  euler.y * FORCE_TANGAGE
+        ForceRearRight += euler.y * FORCE_TANGAGE 
+        
+          
+    
     if not gaz:
         ForceFrontLeft = 0.92 * GRAVITY/4
         ForceFrontRight = 0.92 * GRAVITY/4
         ForceRearLeft = 0.92 * GRAVITY/4
         ForceRearRight = 0.92 * GRAVITY/4      
-    
+        
     # FINAL MOTION
     MotFrontLeft.force = [0, 0, ForceFrontLeft]
     MotFrontLeft.torque = [ForceFrontLeft * RATIO, ForceFrontLeft * RATIO, - ForceFrontLeft * FORCE_LACET]
