@@ -24,13 +24,14 @@ def main():
     anglesVelocity = own.worldAngularVelocity
     angleFront = anglesVelocity[0]
     angleLeft = anglesVelocity[1]
+    angleLacet = anglesVelocity[2]
     
     ForceFrontRight = 0
     ForceFrontLeft = 0
     ForceRearRight = 0
     ForceRearLeft = 0
     key_pressed = False
-    
+    gaz = False
 
     keyUp = cont.sensors['Up']
     keyDown = cont.sensors['Down']
@@ -116,7 +117,7 @@ def main():
             key_pressed = True
         
         # LEFT/RIGHT
-        left = Joystick.axisValues[0]/65534
+        left = (Joystick.axisValues[0]/65534)
         ForceRearRight -= left * FORCE_TANGAGE
         ForceRearLeft += left * FORCE_TANGAGE
         ForceFrontRight -= left * FORCE_TANGAGE
@@ -126,10 +127,11 @@ def main():
         
         # LACET
         lacet = Joystick.axisValues[2]/65534
-        ForceRearRight += lacet * FORCE_TANGAGE
-        ForceRearLeft -= lacet * FORCE_TANGAGE
-        ForceFrontRight -= lacet * FORCE_TANGAGE
-        ForceFrontLeft += lacet * FORCE_TANGAGE
+        lacetstd = lacet + 0.02 
+        ForceRearRight += lacetstd * FORCE_TANGAGE
+        ForceRearLeft -= lacetstd * FORCE_TANGAGE
+        ForceFrontRight -= lacetstd * FORCE_TANGAGE
+        ForceFrontLeft += lacetstd * FORCE_TANGAGE
         if Joystick.axisValues[2] < -15000 or Joystick.axisValues[2] > 15000: 
             key_pressed = True
             
@@ -140,24 +142,9 @@ def main():
         ForceFrontLeft += uppos * FORCE_UP_JOYSTICK
         ForceRearRight += uppos * FORCE_UP_JOYSTICK
         ForceRearLeft += uppos * FORCE_UP_JOYSTICK
+        if uppos > 0.1:
+            gaz = True
 
-        
-            
-           
-        
-    # BASIC MODEL
-    if key4.positive:
-        ForceFrontLeft += FORCE_MOTOR_MAX
-        key_pressed = True
-    if key5.positive:
-        ForceFrontRight += FORCE_MOTOR_MAX
-        key_pressed = True
-    if key1.positive:
-        ForceRearLeft += FORCE_MOTOR_MAX
-        key_pressed = True
-    if key2.positive:
-        ForceRearRight += FORCE_MOTOR_MAX
-        key_pressed = True
     
     # NO KEY MOTION
     
@@ -168,13 +155,16 @@ def main():
             ForceRearLeft = 0
             ForceRearRight = 0
         else:
-            ForceFrontLeft = 0.5 * GRAVITY/4
-            ForceFrontRight = 0.5 * GRAVITY/4
-            ForceRearLeft = 0.5 * GRAVITY/4
-            ForceRearRight = 0.5 * GRAVITY/4
-            own.worldAngularVelocity[0] = -0.5 * angleFront
-            own.worldAngularVelocity[1] = -0.5 * angleLeft
-            
+            own.worldAngularVelocity[0] = 0
+            own.worldAngularVelocity[1] = 0
+            own.worldAngularVelocity[2] = 0
+            # own.localOrientation =  [[1,0,0],[0,1,0],[0,0,1]]
+            print(own.localOrientation) 
+    if not gaz:
+        ForceFrontLeft = 0.92 * GRAVITY/4
+        ForceFrontRight = 0.92 * GRAVITY/4
+        ForceRearLeft = 0.92 * GRAVITY/4
+        ForceRearRight = 0.92 * GRAVITY/4      
     
     # FINAL MOTION
     MotFrontLeft.force = [0, 0, ForceFrontLeft]
