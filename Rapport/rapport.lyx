@@ -104,6 +104,7 @@ mirror
 \end_layout
 
 \begin_layout Standard
+\align center
 \begin_inset Graphics
 	filename modifier.png
 	scale 50
@@ -176,7 +177,7 @@ Nous avons calculé l'ombrage que le modèle se fait sur lui même (ambient
  des zones plus sombre que les autres.
  Blender permet de projeter sur une texture ces zones d'ombre, que nous
  avons ensuite combiné au reste de la texture.
- Celà permet d'avoir un peu plus de réalisme, pour un coût completement
+ Celà permet d'avoir un peu plus de réalisme, pour un coût complètement
  nul au rendu.
 \end_layout
 
@@ -197,6 +198,49 @@ La capture d'écran suivante présente la texture finale avec les différentes
 
 \begin_layout Section
 Contenu de la scène
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename scene.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+La scène finale comporte plusieurs objets:
+\end_layout
+
+\begin_layout Itemize
+Le modèle du quadricoptère (Quadri)
+\end_layout
+
+\begin_layout Itemize
+Un niveau basique où évolue le modèle (Level)
+\end_layout
+
+\begin_layout Itemize
+Une camera
+\end_layout
+
+\begin_layout Itemize
+Un ensemble d'objets parenté à la camera qui servent à afficher le HUD,
+ que nous détaillerons plus loin.
+\end_layout
+
+\begin_layout Itemize
+Un modèle haute résolution du quadricoptère (Quadri.high), qui n'est pas
+ utilisé actuellement.
+\end_layout
+
+\begin_layout Itemize
+Un modèle ultra-simplifié du quadricoptère (32 points, 30 faces), qui va
+ être utilisé comme modèle de collision pour le moteur physique (non actif
+ actuellement).
 \end_layout
 
 \begin_layout Section
@@ -303,7 +347,6 @@ Le centre de l'objet aiguille est placé au niveau de l'axe de rotation de
 \align center
 \begin_inset Graphics
 	filename logic_HUD.png
-	lyxscale 50
 	width 100col%
 	rotateOrigin center
 
@@ -325,7 +368,7 @@ Always
 \begin_inset Quotes erd
 \end_inset
 
- qui active le script à intervals réguliers
+ qui active le script à interval réguliers
 \end_layout
 
 \begin_layout Itemize
