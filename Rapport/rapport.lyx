@@ -86,6 +86,115 @@ Introduction
 Modelisation
 \end_layout
 
+\begin_layout Standard
+Nous avons modelisé le quadricoptère grâce à Blender.
+ Comme le modèle est symetrique, nous avons utilisé le modifier 
+\begin_inset Quotes eld
+\end_inset
+
+mirror
+\begin_inset Quotes erd
+\end_inset
+
+, qui permet de ne modeliser qu'une moitié du modèle.
+ La modelisation à été faite à partir d'une photo vue de dessus, trouvé
+ dans un moteur de recherche.
+ Nous avons mis cette photo en image de fond dans Blender, et modelisé par
+ dessus pour avoir les bonne proportions.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename modifier.png
+	scale 50
+	rotateOrigin center
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Le modèle final complet (les deux cotés) comporte 652 points (vertices),
+ et 668 faces, ce qui est assez leger pour un affichage en temps réel.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename tex_modele.png
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Nous avons ensuite déplié en 2D, c'est à dire que pour chaques points du
+ modèle est associé une coordonnée en 2D dans l'espace de la texture.
+ Ces coordonnées s'appellent les coordonnées UV.
+ Pour faire cela, le principe est de marquer certaines arrêtes (edge) du
+ maillage comme etant des coutures (seam).
+ Ces coutures sont visible en rouge sur la capture d'écran suivante.
+ Le dépliage se fait ensuite grâce à un algorithme interne de Blender, qui
+ va déplier (unwrap) au mieux ces surfaces.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename couture.png
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Une fois le dépliage terminé, nous avons texturé le modèle.
+ Ce texturage s'est fait en 3 étapes.
+\end_layout
+
+\begin_layout Enumerate
+Nou avons projeté la photo vue de dessus du modèle réel sur le modèle virtuel
+ grâce à Blender.
+ Cela nous a permis d'obtenir les décorations du dessus du modèle facilement,
+ déformé de la bonne façon pour coller à notre dépliage.
+\end_layout
+
+\begin_layout Enumerate
+Nous avons ensuite completé la texture grâce au logiciel de traitement d'image
+ The Gimp.
+ Nous avons utilisé notamment l'outil de clonage pour dupliquer la texture
+ de polystirène noir partout où c'était necessaire.
+\end_layout
+
+\begin_layout Enumerate
+Nous avons calculé l'ombrage que le modèle se fait sur lui même (ambient
+ occlusion).
+ C'est à dire que certaines partie du modèle en cache d'autre, ce qui crée
+ des zones plus sombre que les autres.
+ Blender permet de projeter sur une texture ces zones d'ombre, que nous
+ avons ensuite combiné au reste de la texture.
+ Celà permet d'avoir un peu plus de réalisme, pour un coût completement
+ nul au rendu.
+\end_layout
+
+\begin_layout Standard
+La capture d'écran suivante présente la texture finale avec les différentes
+ couches, ainsi que le dépliage du modèle.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename tex_UV.png
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Contenu de la scène
 \end_layout
@@ -98,12 +207,34 @@ Simulation physique du quadricopère
 Principe global
 \end_layout
 
+\begin_layout Standard
+\begin_inset Graphics
+	filename logic_quadri.png
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Subsection
 Comportement simple
 \end_layout
 
 \begin_layout Subsection
 Comportement évolué
+\end_layout
+
+\begin_layout Subsection
+Joystick
+\end_layout
+
+\begin_layout Subsubsection
+Zone morte
+\end_layout
+
+\begin_layout Subsubsection
+Gestion du pilotage
 \end_layout
 
 \begin_layout Section
