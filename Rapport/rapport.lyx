@@ -83,10 +83,10 @@ Introduction
 \end_layout
 
 \begin_layout Standard
-Dans le cadre de notre projet nous avons été amené à modéliser en 3D un
+Dans le cadre de notre projet nous avons été amenés à modéliser en 3D un
  quadricoptère sous Blender.
  Ce document a pour but d'expliciter les différentes étapes que nous avons
- suivis afin de réaliser ce travail.
+ suivi afin de réaliser ce travail.
  
 \end_layout
 
@@ -107,15 +107,15 @@ primitif
 \end_layout
 
 \begin_layout Standard
-On reviendra enfin sur les différentes extensions que nous avons ajoutés,
- à savoir un comportement plus évolué, la possibilité de controler le quadricopt
+On reviendra enfin sur les différentes extensions que nous avons ajoutées,
+ à savoir un comportement plus évolué, la possibilité de contrôler le quadricopt
 ère à l'aide d'un joystick ainsi qu'un HUD.
 \end_layout
 
 \begin_layout Standard
 Quelques petites précisions supplémentaires avant de commencer : nous avons
  utilisé la version 2.57 de Blender, le design du modèle que nous avons pris
- est celui du ArDrone de Parrot, et le contrôle de ce modèle est apportée
+ est celui du ArDrone de Parrot, et le contrôle de ce modèle est apporté
  dans le Blender Game Engine via des scripts (en Python) écrits par nos
  soins, en combinaison avec le moteur physique interne de Blender, Bullet.
 \end_layout
@@ -135,7 +135,7 @@ mirror
 \end_inset
 
 , qui permet de ne modéliser qu'une moitié du modèle.
- La modélisation à été faite à partir d'une photo vue de dessus, trouvé
+ La modélisation a été faite à partir d'une photo vue de dessus, trouvée
  dans un moteur de recherche.
  Nous avons mis cette photo en image de fond dans Blender, et modélisé par
  dessus pour avoir les bonne proportions.
@@ -169,13 +169,13 @@ Le modèle final complet (les deux cotés) comporte 652 points (vertices),
 \end_layout
 
 \begin_layout Standard
-Nous avons ensuite déplié en 2D, c'est à dire que pour chaque points du
- modèle est associé une coordonnée en 2D dans l'espace de la texture.
+Nous avons ensuite déplié en 2D, c'est à dire que pour chaque point du modèle
+ est associé une coordonnée en 2D dans l'espace de la texture.
  Ces coordonnées s'appellent les coordonnées UV.
  Pour faire cela, le principe est de marquer certaines arrêtes (edge) du
  maillage comme étant des coutures (seam).
- Ces coutures sont visible en rouge sur la capture d'écran suivante.
- Le dépliage se fait ensuite grâce à un algorithme interne de Blender, qui
+ Ces coutures sont visibles en rouge sur la capture d'écran suivante.
+ Le dépliage se fait ensuite grâce à un algorithme interne de Blender qui
  va déplier (unwrap) au mieux ces surfaces.
 \end_layout
 
@@ -210,12 +210,12 @@ Nous avons ensuite complété la texture grâce au logiciel de traitement d'imag
 
 \begin_layout Enumerate
 Nous avons calculé l'ombrage que le modèle fait sur lui même (ambient occlusion).
- C'est à dire que certaines partie du modèle en cache d'autre, ce qui crée
- des zones plus sombre que les autres.
+ C'est à dire que certaines parties du modèle en cache d'autre, ce qui crée
+ des zones plus sombres que les autres.
  Blender permet de projeter sur une texture ces zones d'ombre, que nous
- avons ensuite combiné au reste de la texture.
- Cela permet d'avoir un peu plus de réalisme, pour un coût complètement
- nul au rendu.
+ avons ensuite combinées au reste de la texture.
+ Cela permet d'avoir un peu plus de réalisme pour un coût complètement nul
+ au rendu.
 \end_layout
 
 \begin_layout Standard
@@ -265,8 +265,8 @@ Une caméra
 \end_layout
 
 \begin_layout Itemize
-Un ensemble d'objets parenté à la caméra qui servent à afficher le HUD,
- que nous détaillerons plus loin.
+Un ensemble d'objets parenté à la caméra qui sert à afficher le HUD, que
+ nous détaillerons plus loin.
 \end_layout
 
 \begin_layout Itemize
@@ -345,7 +345,7 @@ A noter également que nous avons deux
 \begin_inset Quotes eld
 \end_inset
 
-sensors
+sensor
 \begin_inset Quotes erd
 \end_inset
 
@@ -397,12 +397,12 @@ Nous avons donc défini une variable pour chaque force appliquée à chaque
 \end_layout
 
 \begin_layout Standard
-Ainsi nous avons parties distinctes dans notre code pour gérer ce comportement.
+Ainsi nous avons 2 parties distinctes dans notre code pour gérer ce comportement.
 \end_layout
 
 \begin_layout Standard
-Une qui détecte une pression sur une 4 touches et qui incrémente la force
- correspondante.
+Une qui détecte une pression sur une des 4 touches et qui incrémente la
+ force correspondante.
 \end_layout
 
 \begin_layout Standard
@@ -457,12 +457,12 @@ En effet, comme précisé précédemment, le Joystick n'envoie pas directement
 
 \begin_layout Standard
 On a donc ajouté un sensor always qui permet de lire en continue les valeurs
- envoyés par le joystick.
+ envoyées par le joystick.
 \end_layout
 
 \begin_layout Standard
 Notons également deux points importants de ce comportement.
- Nous avons définie une 
+ 
 \end_layout
 
 \begin_layout Subsubsection
@@ -470,8 +470,7 @@ Zone morte
 \end_layout
 
 \begin_layout Standard
-Notons également deux points importants de ce comportement.
- Nous avons définie une 
+Nous avons définie une 
 \begin_inset Quotes eld
 \end_inset
 
@@ -480,8 +479,8 @@ zone morte
 \end_inset
 
  , qui permet de rendre le Joystick moins sensible aux variations minimum.
- Cette sensibilité peut être modifié via la constante THRESHOLD (il est
- à noté que la position d'un axe va de -32768 à 32767).
+ Cette sensibilité peut être modifiée via la constante THRESHOLD (il est
+ à noter que la position d'un axe va de -32768 à 32767).
 \end_layout
 
 \begin_layout Subsubsection
@@ -495,9 +494,9 @@ Le deuxième ajout est une aide au pilotage.
 \end_layout
 
 \begin_layout Standard
-Pour cela on va récupère l'orientation de notre modèle par rapport à l'environne
-ment (elle est représentée par une matrice 3x3), puis on applique des forces
- opposés à l'orientation actuelle afin de remettre le quadricoptère dans
+Pour cela on va récupèrer l'orientation de notre modèle par rapport à l'environn
+ement (elle est représentée par une matrice 3x3), puis on applique des forces
+ opposées à l'orientation actuelle afin de remettre le quadricoptère dans
  une position 
 \begin_inset Quotes eld
 \end_inset
@@ -521,8 +520,9 @@ Principe global
 Le HUD (head's up display) que nous avons implémenté est constitué d'un
  indicateur de vitesse et d'un indicateur d'altitude.
  Le principe est relativement simple.
- Pour chaque indicateur, deux plans sont positionné parallèlement à la caméra
- et parenté à elle de sorte que si la caméra bouge, les indicateurs suivent.
+ Pour chaque indicateur, deux plans sont positionnés parallèlement à la
+ caméra et parentés à elle de sorte que si la caméra bouge, les indicateurs
+ suivent.
  Ces plans sont texturés avec les deux textures suivantes:
 \end_layout
 
@@ -559,12 +559,12 @@ Activation de la transparence (la texture affecte les canaux color et alpha,
 
 \begin_layout Itemize
 Matériau en shadeless, c'est à dire pas de calcul d'ombrage ou d'éclairage.
- Seule les couleurs de la texture sont affichés.
+ Seules les couleurs de la texture sont affichées.
 \end_layout
 
 \begin_layout Standard
 Le centre de l'objet aiguille est placé au niveau de l'axe de rotation de
- l'aiguille, de sorte qu'on ai juste à appliquer une rotation à l'aiguille
+ l'aiguille, de sorte qu'on ait juste à appliquer une rotation à l'aiguille
  pour fixer la valeur.
  Les afficheurs prennent vie grâce à un script python simple que nous allons
  voir dans la partie suivante.
@@ -620,8 +620,8 @@ Motion
 \begin_inset Quotes erd
 \end_inset
 
- qui ne sert strictement à rien, si ce n'est d'avoir un graph valide (sinon
- le script ne se déclencherai pas).
+ qui ne sert strictement à rien, si ce n'est d'avoir un graphe valide (sinon
+ le script ne se déclencherait pas).
 \end_layout
 
 \begin_layout Subsection
