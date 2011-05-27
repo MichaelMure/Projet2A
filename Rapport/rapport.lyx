@@ -68,7 +68,7 @@ Benoît Saccomano & Michael Muré
 \end_layout
 
 \begin_layout Date
-13/05/2011
+27/05/2011
 \end_layout
 
 \begin_layout Standard
@@ -102,31 +102,31 @@ primitif
 \begin_inset Quotes erd
 \end_inset
 
-, c'est à dire qui agit basiquement sur les 4 moteurs.
+, c'est à dire qui permet de commander indépendament les 4 moteurs.
  
 \end_layout
 
 \begin_layout Standard
 On reviendra enfin sur les différentes extensions que nous avons ajoutés,
  à savoir un comportement plus évolué, la possibilité de controler le quadricopt
- ère à l'aide d'un Joystick ainsi qu'un HUD.
+ère à l'aide d'un joystick ainsi qu'un HUD.
 \end_layout
 
 \begin_layout Standard
 Quelques petites précisions supplémentaires avant de commencer : nous avons
  utilisé la version 2.57 de Blender, le design du modèle que nous avons pris
- est celui du ArDrone de Parrot, quant à la modélisation physique elle est
- apportée dans le Blender Game via des scripts (en Python) écrits par nos
- soins.
+ est celui du ArDrone de Parrot, et le contrôle de ce modèle est apportée
+ dans le Blender Game Engine via des scripts (en Python) écrits par nos
+ soins, en combinaison avec le moteur physique interne de Blender, Bullet.
 \end_layout
 
 \begin_layout Section
-Modelisation
+Modélisation
 \end_layout
 
 \begin_layout Standard
-Nous avons modelisé le quadricoptère grâce à Blender.
- Comme le modèle est symetrique, nous avons utilisé le modifier 
+Nous avons modélisé le quadricoptère grâce à Blender.
+ Comme le modèle est symétrique, nous avons utilisé le modifier 
 \begin_inset Quotes eld
 \end_inset
 
@@ -134,10 +134,10 @@ mirror
 \begin_inset Quotes erd
 \end_inset
 
-, qui permet de ne modeliser qu'une moitié du modèle.
- La modelisation à été faite à partir d'une photo vue de dessus, trouvé
+, qui permet de ne modéliser qu'une moitié du modèle.
+ La modélisation à été faite à partir d'une photo vue de dessus, trouvé
  dans un moteur de recherche.
- Nous avons mis cette photo en image de fond dans Blender, et modelisé par
+ Nous avons mis cette photo en image de fond dans Blender, et modélisé par
  dessus pour avoir les bonne proportions.
 \end_layout
 
@@ -155,7 +155,7 @@ mirror
 
 \begin_layout Standard
 Le modèle final complet (les deux cotés) comporte 652 points (vertices),
- et 668 faces, ce qui est assez leger pour un affichage en temps réel.
+ et 668 faces, ce qui est assez léger pour un affichage en temps réel.
 \end_layout
 
 \begin_layout Standard
@@ -169,11 +169,11 @@ Le modèle final complet (les deux cotés) comporte 652 points (vertices),
 \end_layout
 
 \begin_layout Standard
-Nous avons ensuite déplié en 2D, c'est à dire que pour chaques points du
+Nous avons ensuite déplié en 2D, c'est à dire que pour chaque points du
  modèle est associé une coordonnée en 2D dans l'espace de la texture.
  Ces coordonnées s'appellent les coordonnées UV.
  Pour faire cela, le principe est de marquer certaines arrêtes (edge) du
- maillage comme etant des coutures (seam).
+ maillage comme étant des coutures (seam).
  Ces coutures sont visible en rouge sur la capture d'écran suivante.
  Le dépliage se fait ensuite grâce à un algorithme interne de Blender, qui
  va déplier (unwrap) au mieux ces surfaces.
@@ -195,27 +195,26 @@ Une fois le dépliage terminé, nous avons texturé le modèle.
 \end_layout
 
 \begin_layout Enumerate
-Nou avons projeté la photo vue de dessus du modèle réel sur le modèle virtuel
+Nous avons projeté la photo vue de dessus du modèle réel sur le modèle virtuel
  grâce à Blender.
  Cela nous a permis d'obtenir les décorations du dessus du modèle facilement,
  déformé de la bonne façon pour coller à notre dépliage.
 \end_layout
 
 \begin_layout Enumerate
-Nous avons ensuite completé la texture grâce au logiciel de traitement d'image
+Nous avons ensuite complété la texture grâce au logiciel de traitement d'image
  The Gimp.
  Nous avons utilisé notamment l'outil de clonage pour dupliquer la texture
- de polystirène noir partout où c'était necessaire.
+ de polystyrène noir partout où c'était nécessaire.
 \end_layout
 
 \begin_layout Enumerate
-Nous avons calculé l'ombrage que le modèle se fait sur lui même (ambient
- occlusion).
+Nous avons calculé l'ombrage que le modèle fait sur lui même (ambient occlusion).
  C'est à dire que certaines partie du modèle en cache d'autre, ce qui crée
  des zones plus sombre que les autres.
  Blender permet de projeter sur une texture ces zones d'ombre, que nous
  avons ensuite combiné au reste de la texture.
- Celà permet d'avoir un peu plus de réalisme, pour un coût complètement
+ Cela permet d'avoir un peu plus de réalisme, pour un coût complètement
  nul au rendu.
 \end_layout
 
@@ -262,11 +261,11 @@ Un niveau basique où évolue le modèle (Level)
 \end_layout
 
 \begin_layout Itemize
-Une camera
+Une caméra
 \end_layout
 
 \begin_layout Itemize
-Un ensemble d'objets parenté à la camera qui servent à afficher le HUD,
+Un ensemble d'objets parenté à la caméra qui servent à afficher le HUD,
  que nous détaillerons plus loin.
 \end_layout
 
@@ -282,7 +281,7 @@ Un modèle ultra-simplifié du quadricoptère (32 points, 30 faces), qui va
 \end_layout
 
 \begin_layout Section
-Simulation physique du quadricopère
+Simulation physique du quadricoptère
 \end_layout
 
 \begin_layout Subsection
@@ -305,7 +304,7 @@ sensors
 \end_inset
 
  qui détectent une action sur une entrée et génèrent un évènement.
- Dans notre cas cela correspond aux touches du clavier, ou à un Joystick.
+ Dans notre cas cela correspond aux touches du clavier, ou à un joystick.
 \end_layout
 
 \begin_layout Itemize
@@ -320,7 +319,7 @@ controller
   qui sont le plus souvent des expressions logiques (OR, NAND...) faisant la
  liaison entre les sensor et les controller.
  Dans notre cas, la complexité du comportement nous a poussé à utiliser
- des script Python en tant que controller.
+ des scripts Python en tant que controller.
 \end_layout
 
 \begin_layout Itemize
@@ -353,7 +352,7 @@ sensors
  always.
  Le premier est relié au script python et permet un déclenchement périodique
  du script est utilisé dans pour l'utilisation du Joystick puisque celui-ci
- n'envoi aucun élément mais que les valeurs de ces axes/boutons.
+ n'envoie aucun élément mais que les valeurs de ces axes/boutons.
  Le deuxième est relié directement aux 
 \begin_inset Quotes eld
 \end_inset
@@ -410,7 +409,7 @@ Une qui détecte une pression sur une 4 touches et qui incrémente la force
 La deuxième partie consiste à affecter les 4 forces au modèle.
  Il faut préciser qu'avec Blender, toutes les forces s'appliquent, par défaut,
  au centre de gravité de l'objet considéré.
- Pour remedédier à ce problème nous appliquons également à cet endroit du
+ Pour remédier à ce problème nous appliquons également à cet endroit du
  script les moments qui sont nécessaires pour 
 \begin_inset Quotes eld
 \end_inset
@@ -419,8 +418,8 @@ déplacer
 \begin_inset Quotes erd
 \end_inset
 
- la force au point qui nous intéresse (en loccurence la position où se trouve
- le moteur).
+ la force au point qui nous intéresse (en l'occurrence la position où se
+ trouve le moteur).
 \end_layout
 
 \begin_layout Subsection
@@ -451,7 +450,7 @@ Le comportement via Joystick est légèrement différent de celui au clavier.
 \end_layout
 
 \begin_layout Standard
-En effet, comme précisé précedemment, le Joystick n'envois pas directement
+En effet, comme précisé précédemment, le Joystick n'envoie pas directement
  des évènements mais juste un tableau de 4 valeurs correspondant aux valeurs
  des axes (3 axes de la manette plus l'axe de la molette des gaz).
 \end_layout
@@ -480,7 +479,7 @@ zone morte
 \begin_inset Quotes erd
 \end_inset
 
- , qui permet de rendre le joystick moins sensible aux variations minimum.
+ , qui permet de rendre le Joystick moins sensible aux variations minimum.
  Cette sensibilité peut être modifié via la constante THRESHOLD (il est
  à noté que la position d'un axe va de -32768 à 32767).
 \end_layout
@@ -492,13 +491,13 @@ Gestion du pilotage
 \begin_layout Standard
 Le deuxième ajout est une aide au pilotage.
  Concrètement celle-ci consiste à repositionner le quadricoptère dans sa
- position initiale si l'utilisateur lache le joystick.
+ position initiale si l'utilisateur lâche le Joystick.
 \end_layout
 
 \begin_layout Standard
 Pour cela on va récupère l'orientation de notre modèle par rapport à l'environne
-ment (elle est representée par une matrice 3x3), puis on applique des forces
- opposés à l'orientation actuelle afin de remettre le quadricopètre dans
+ment (elle est représentée par une matrice 3x3), puis on applique des forces
+ opposés à l'orientation actuelle afin de remettre le quadricoptère dans
  une position 
 \begin_inset Quotes eld
 \end_inset
@@ -522,7 +521,7 @@ Principe global
 Le HUD (head's up display) que nous avons implémenté est constitué d'un
  indicateur de vitesse et d'un indicateur d'altitude.
  Le principe est relativement simple.
- Pour chaque indicateur, deux plans sont positionné parallèlement à la camera
+ Pour chaque indicateur, deux plans sont positionné parallèlement à la caméra
  et parenté à elle de sorte que si la caméra bouge, les indicateurs suivent.
  Ces plans sont texturés avec les deux textures suivantes:
 \end_layout
@@ -559,7 +558,7 @@ Activation de la transparence (la texture affecte les canaux color et alpha,
 \end_layout
 
 \begin_layout Itemize
-Matériau en shadeless, c'est à dire pas de calcul d'ombrage ou d'eclairage.
+Matériau en shadeless, c'est à dire pas de calcul d'ombrage ou d'éclairage.
  Seule les couleurs de la texture sont affichés.
 \end_layout
 
@@ -567,7 +566,7 @@ Matériau en shadeless, c'est à dire pas de calcul d'ombrage ou d'eclairage.
 Le centre de l'objet aiguille est placé au niveau de l'axe de rotation de
  l'aiguille, de sorte qu'on ai juste à appliquer une rotation à l'aiguille
  pour fixer la valeur.
- Les afficheurs prennent vie grace à un script python simple que nous allons
+ Les afficheurs prennent vie grâce à un script python simple que nous allons
  voir dans la partie suivante.
  Le réseau logique utilisé est le suivant:
 \end_layout
@@ -597,7 +596,7 @@ Always
 \begin_inset Quotes erd
 \end_inset
 
- qui active le script à interval réguliers
+ qui active le script à intervalles réguliers
 \end_layout
 
 \begin_layout Itemize
