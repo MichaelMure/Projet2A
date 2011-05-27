@@ -82,6 +82,44 @@ Benoît Saccomano & Michael Muré
 Introduction
 \end_layout
 
+\begin_layout Standard
+Dans le cadre de notre projet nous avons été amené à modéliser en 3D un
+ quadricoptère sous Blender.
+ Ce document a pour but d'expliciter les différentes étapes que nous avons
+ suivis afin de réaliser ce travail.
+ 
+\end_layout
+
+\begin_layout Standard
+Dans un premier temps on reviendra sur la modélisation (au sens graphique)
+ du modèle.
+ Ensuite on décrira la méthode suivie afin d'intégrer à ce modèle un comportemen
+t physique 
+\begin_inset Quotes eld
+\end_inset
+
+primitif
+\begin_inset Quotes erd
+\end_inset
+
+, c'est à dire qui agit basiquement sur les 4 moteurs.
+ 
+\end_layout
+
+\begin_layout Standard
+On reviendra enfin sur les différentes extensions que nous avons ajoutés,
+ à savoir un comportement plus évolué, la possibilité de controler le quadricopt
+ ère à l'aide d'un Joystick ainsi qu'un HUD.
+\end_layout
+
+\begin_layout Standard
+Quelques petites précisions supplémentaires avant de commencer : nous avons
+ utilisé la version 2.57 de Blender, le design du modèle que nous avons pris
+ est celui du ArDrone de Parrot, quant à la modélisation physique elle est
+ apportée dans le Blender Game via des scripts (en Python) écrits par nos
+ soins.
+\end_layout
+
 \begin_layout Section
 Modelisation
 \end_layout
@@ -252,6 +290,90 @@ Principe global
 \end_layout
 
 \begin_layout Standard
+Afin de pouvoir donner son comportement au modèle dans le mode de jeu de
+ Blender, il a fallu définir plusieurs types d'objets sur notre modèle de
+ quadricoptère.
+\end_layout
+
+\begin_layout Itemize
+les 
+\begin_inset Quotes eld
+\end_inset
+
+sensors
+\begin_inset Quotes erd
+\end_inset
+
+ qui détectent une action sur une entrée et génèrent un évènement.
+ Dans notre cas cela correspond aux touches du clavier, ou à un Joystick.
+\end_layout
+
+\begin_layout Itemize
+les 
+\begin_inset Quotes eld
+\end_inset
+
+controller
+\begin_inset Quotes erd
+\end_inset
+
+  qui sont le plus souvent des expressions logiques (OR, NAND...) faisant la
+ liaison entre les sensor et les controller.
+ Dans notre cas, la complexité du comportement nous a poussé à utiliser
+ des script Python en tant que controller.
+\end_layout
+
+\begin_layout Itemize
+les 
+\begin_inset Quotes eld
+\end_inset
+
+actuators
+\begin_inset Quotes erd
+\end_inset
+
+ qui se chargent de modifier le modèle suivant les paramètres du controller.
+ Dans notre cas, ils sont au nombre de 4, un pour chaque moteur du quadricoptère.
+\end_layout
+
+\begin_layout Standard
+Ces différents éléments sont destinés à être reliés entre eux suivant le
+ comportement que l'on souhaite définir.
+\end_layout
+
+\begin_layout Standard
+A noter également que nous avons deux 
+\begin_inset Quotes eld
+\end_inset
+
+sensors
+\begin_inset Quotes erd
+\end_inset
+
+ always.
+ Le premier est relié au script python et permet un déclenchement périodique
+ du script est utilisé dans pour l'utilisation du Joystick puisque celui-ci
+ n'envoi aucun élément mais que les valeurs de ces axes/boutons.
+ Le deuxième est relié directement aux 
+\begin_inset Quotes eld
+\end_inset
+
+actuators
+\begin_inset Quotes erd
+\end_inset
+
+ via un controller and de façon à activer les 
+\begin_inset Quotes eld
+\end_inset
+
+actuators
+\begin_inset Quotes erd
+\end_inset
+
+ de façon permanente.
+\end_layout
+
+\begin_layout Standard
 \begin_inset Graphics
 	filename logic_quadri.png
 	width 100text%
@@ -265,20 +387,127 @@ Principe global
 Comportement simple
 \end_layout
 
+\begin_layout Standard
+Le but du comportement simple est de pouvoir agir via une touche du clavier
+ sur un moteur.
+\end_layout
+
+\begin_layout Standard
+Nous avons donc défini une variable pour chaque force appliquée à chaque
+ moteur.
+\end_layout
+
+\begin_layout Standard
+Ainsi nous avons parties distinctes dans notre code pour gérer ce comportement.
+\end_layout
+
+\begin_layout Standard
+Une qui détecte une pression sur une 4 touches et qui incrémente la force
+ correspondante.
+\end_layout
+
+\begin_layout Standard
+La deuxième partie consiste à affecter les 4 forces au modèle.
+ Il faut préciser qu'avec Blender, toutes les forces s'appliquent, par défaut,
+ au centre de gravité de l'objet considéré.
+ Pour remedédier à ce problème nous appliquons également à cet endroit du
+ script les moments qui sont nécessaires pour 
+\begin_inset Quotes eld
+\end_inset
+
+déplacer
+\begin_inset Quotes erd
+\end_inset
+
+ la force au point qui nous intéresse (en loccurence la position où se trouve
+ le moteur).
+\end_layout
+
 \begin_layout Subsection
 Comportement évolué
+\end_layout
+
+\begin_layout Standard
+Le comportement évolué reprend le comportement précédent mais offre la possibili
+té de piloter le quadricoptère.
+\end_layout
+
+\begin_layout Standard
+En effet, nous avons dans ce cas 8 autres touches pour piloter le quadricoptère.
+ Mais dans ce cas, une pression sur une touche aura pour effet de modifier
+ plusieurs forces à la fois.
+\end_layout
+
+\begin_layout Standard
+Ainsi on offre la possibilité à l'utilisateur du décollage, tangage et lacet.
 \end_layout
 
 \begin_layout Subsection
 Joystick
 \end_layout
 
+\begin_layout Standard
+Le comportement via Joystick est légèrement différent de celui au clavier.
+\end_layout
+
+\begin_layout Standard
+En effet, comme précisé précedemment, le Joystick n'envois pas directement
+ des évènements mais juste un tableau de 4 valeurs correspondant aux valeurs
+ des axes (3 axes de la manette plus l'axe de la molette des gaz).
+\end_layout
+
+\begin_layout Standard
+On a donc ajouté un sensor always qui permet de lire en continue les valeurs
+ envoyés par le joystick.
+\end_layout
+
+\begin_layout Standard
+Notons également deux points importants de ce comportement.
+ Nous avons définie une 
+\end_layout
+
 \begin_layout Subsubsection
 Zone morte
 \end_layout
 
+\begin_layout Standard
+Notons également deux points importants de ce comportement.
+ Nous avons définie une 
+\begin_inset Quotes eld
+\end_inset
+
+zone morte
+\begin_inset Quotes erd
+\end_inset
+
+ , qui permet de rendre le joystick moins sensible aux variations minimum.
+ Cette sensibilité peut être modifié via la constante THRESHOLD (il est
+ à noté que la position d'un axe va de -32768 à 32767).
+\end_layout
+
 \begin_layout Subsubsection
 Gestion du pilotage
+\end_layout
+
+\begin_layout Standard
+Le deuxième ajout est une aide au pilotage.
+ Concrètement celle-ci consiste à repositionner le quadricoptère dans sa
+ position initiale si l'utilisateur lache le joystick.
+\end_layout
+
+\begin_layout Standard
+Pour cela on va récupère l'orientation de notre modèle par rapport à l'environne
+ment (elle est representée par une matrice 3x3), puis on applique des forces
+ opposés à l'orientation actuelle afin de remettre le quadricopètre dans
+ une position 
+\begin_inset Quotes eld
+\end_inset
+
+neutre
+\begin_inset Quotes erd
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Section
