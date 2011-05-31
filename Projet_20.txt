@@ -3,16 +3,21 @@
 <ELEVE>Michael MURE</ELEVE>
 <ELEVE>Benoît SACCOMANO</ELEVE>
 <ENSEIGNANT>Denis LIENHARDT</ENSEIGNANT>
-<CLE>Blender, Quadricopètre, 3D, Modélisation, Python</CLE>
-<SUJET></SUJET>
+<CLE>Blender, Quadricopètre, 3D, Modélisation, Python, Bullet, Game Engine, Blender Game, Joystick</CLE>
+<SUJET>Modélisation d'un quadricoptère avec Blender</SUJET>
 <REALISATION>
-La première étape du projet fut la réalisation d'un modèle 3D du quadricoptère. Pour ça, nous avons utilisé les différents outils que propose Blender quant à la création d'un objet 3D. Tel que le modifier Mirror.
-La deuxième partie du projet consiste à donner un comportement dynamique et relativement réaliste à notre quadricoptère.
+La première étape du projet fut la réalisation d'un modèle 3D du quadricoptère. Le modèle étant symétrique, nous avons notamment utilisé un outil de miroir qui génère automatiquement la moitié du modèle. Nous nous somme inspirés de différentes images représentant le drone AR Parrot afin de construire un modèle réaliste.
 <FIGURE>
-	<LEGENDE></LEGENDE>
+	<LEGENDE>Outils de Miroir de Blender</LEGENDE>
 	<FICHIER></FICHIER>
 </FIGURE>
-paragraphe trokoul toujours sur une ligne
+La seconde étape de modélisation fut l'ajout d'une texture à notre modèle. Pour cela nous avons déplié notre modèle en 2 dimensions. Les textures sont définies sur les différentes surfaces qui composent notre quadricoptère. Au final notre modèle complet (les deux moitiés) se compose de 668 faces et 652 points. Notons que pour gérer les collisions du quadricoptère avec l'environnment dans lequel il évolue, un modèle plus léger (32 points et 30 faces) est utilisé.
+Nous avons ensuite intégré notre modèle à une scène qui comporte les deux éléments classiques de Blender : une caméra et une lampe. Puis nous avons construit un "monde" dans lequel notre quadricoptère évolue ainsi qu'un HUD qui nous renseigne sur la vitesse et l'altitude de notre quadricopère.
+<FIGURE>
+	<LEGENDE>Quadricoptere</LEGENDE>
+	<FICHIER></FICHIER>
+</FIGURE>
+Viens ensuite le comportement de notre quadricoptère. Pour cela nous avons utilisé le moteur de jeu de Blender (basé notamment sur la libraire Bullet). L'idée de base est d'ajouter des capteurs et de les lier à des modifications sur le modèle. La liaison s'effectue dans notre cas via un script Pyhton. Ce script est notamment composé de 4 variables qui représentent les forces qui résultent de chaque moteur. En réalité, Blender ne peut appliquer une force qu'au point de gravité d'un objet. Nous avons donc rajouté les couples correspondant pour appliquer ces forces au bons endroits. Au final, une action sur notre clavier (ou Joystik) va entrainer une modification des forces appliquées aux moteurs.
 </REALISATION>
 <CONTACT>michael.mure@uha.fr</CONTACT>
 <CONTACT>benoit.saccomano@gmail.com</CONTACT>
