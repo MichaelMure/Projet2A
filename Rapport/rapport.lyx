@@ -1,5 +1,5 @@
-#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
-\lyxformat 345
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
 \begin_document
 \begin_header
 \textclass article
@@ -8,18 +8,26 @@
 \lstset{language=Python}
 \end_preamble
 \use_default_options true
+\maintain_unincluded_children false
 \language french
+\language_package default
 \inputencoding auto
+\fontencoding global
 \font_roman default
 \font_sans default
 \font_typewriter default
 \font_default_family default
+\use_non_tex_fonts false
 \font_sc false
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 100
 
 \graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
 \paperfontsize default
 \spacing single
 \use_hyperref true
@@ -38,23 +46,33 @@
 \use_geometry true
 \use_amsmath 1
 \use_esint 1
+\use_mhchem 1
+\use_mathdots 1
 \cite_engine basic
 \use_bibtopic false
+\use_indices false
 \paperorientation portrait
+\suppress_date false
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
 \leftmargin 3cm
 \rightmargin 3cm
 \secnumdepth 3
 \tocdepth 3
 \paragraph_separation indent
-\defskip medskip
-\quotes_language english
+\paragraph_indentation default
+\quotes_language french
 \papercolumns 1
 \papersides 1
 \paperpagestyle fancy
 \tracking_changes false
 \output_changes false
-\author "" 
-\author "" 
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
 \end_header
 
 \begin_body
@@ -84,7 +102,7 @@ Introduction
 
 \begin_layout Standard
 Dans le cadre de notre projet nous avons été amenés à modéliser en 3D un
- quadricoptère sous Blender.
+ quadricoptère sous Blender™.
  Ce document a pour but d'expliciter les différentes étapes que nous avons
  suivi afin de réaliser ce travail.
  
@@ -95,11 +113,11 @@ Dans un premier temps on reviendra sur la modélisation (au sens graphique)
  du modèle.
  Ensuite on décrira la méthode suivie afin d'intégrer à ce modèle un comportemen
 t physique 
-\begin_inset Quotes eld
+\begin_inset Quotes fld
 \end_inset
 
 primitif
-\begin_inset Quotes erd
+\begin_inset Quotes frd
 \end_inset
 
 , c'est à dire qui permet de commander indépendament les 4 moteurs.
@@ -108,16 +126,21 @@ primitif
 
 \begin_layout Standard
 On reviendra enfin sur les différentes extensions que nous avons ajoutées,
- à savoir un comportement plus évolué, la possibilité de contrôler le quadricopt
-ère à l'aide d'un joystick ainsi qu'un HUD.
+ à savoir un HUD (
+\shape italic
+head's up display
+\shape default
+), un comportement plus évolué et la possibilité de contrôler le quadricoptère
+ à l'aide d'un joystick.
 \end_layout
 
 \begin_layout Standard
 Quelques petites précisions supplémentaires avant de commencer : nous avons
  utilisé la version 2.57 de Blender, le design du modèle que nous avons pris
- est celui du ArDrone de Parrot, et le contrôle de ce modèle est apporté
- dans le Blender Game Engine via des scripts (en Python) écrits par nos
- soins, en combinaison avec le moteur physique interne de Blender, Bullet.
+ est celui du drone vendu par Parroy™, le contrôle de ce modèle est apporté
+ dans le moteur de jeu de Blender™ via des scripts (en Python) écrits par
+ nos soins, en combinaison avec le moteur physique interne de Blender™,
+ Bullet.
 \end_layout
 
 \begin_layout Section
@@ -126,19 +149,15 @@ Modélisation
 
 \begin_layout Standard
 Nous avons modélisé le quadricoptère grâce à Blender.
- Comme le modèle est symétrique, nous avons utilisé le modifier 
-\begin_inset Quotes eld
-\end_inset
-
-mirror
-\begin_inset Quotes erd
-\end_inset
-
-, qui permet de ne modéliser qu'une moitié du modèle.
+ Comme le modèle est symétrique, nous avons utilisé un outil de miroir (
+\shape italic
+modifier mirror
+\shape default
+), qui permet de ne modéliser qu'une moitié du modèle.
  La modélisation a été faite à partir d'une photo vue de dessus, trouvée
  dans un moteur de recherche.
  Nous avons mis cette photo en image de fond dans Blender, et modélisé par
- dessus pour avoir les bonne proportions.
+ dessus pour avoir les bonnes proportions.
 \end_layout
 
 \begin_layout Standard
@@ -170,10 +189,17 @@ Le modèle final complet (les deux cotés) comporte 652 points (vertices),
 
 \begin_layout Standard
 Nous avons ensuite déplié en 2D, c'est à dire que pour chaque point du modèle
- est associé une coordonnée en 2D dans l'espace de la texture.
+ est associée une coordonnée en 2D dans l'espace de la texture.
  Ces coordonnées s'appellent les coordonnées UV.
- Pour faire cela, le principe est de marquer certaines arrêtes (edge) du
- maillage comme étant des coutures (seam).
+ Pour faire cela, le principe est de marquer certaines arrêtes (
+\shape italic
+edge
+\shape default
+) du maillage comme étant des coutures (
+\shape italic
+seam
+\shape default
+).
  Ces coutures sont visibles en rouge sur la capture d'écran suivante.
  Le dépliage se fait ensuite grâce à un algorithme interne de Blender qui
  va déplier (unwrap) au mieux ces surfaces.
@@ -198,7 +224,7 @@ Une fois le dépliage terminé, nous avons texturé le modèle.
 Nous avons projeté la photo vue de dessus du modèle réel sur le modèle virtuel
  grâce à Blender.
  Cela nous a permis d'obtenir les décorations du dessus du modèle facilement,
- déformé de la bonne façon pour coller à notre dépliage.
+ déformées de la bonne façon pour coller à notre dépliage.
 \end_layout
 
 \begin_layout Enumerate
@@ -209,9 +235,13 @@ Nous avons ensuite complété la texture grâce au logiciel de traitement d'imag
 \end_layout
 
 \begin_layout Enumerate
-Nous avons calculé l'ombrage que le modèle fait sur lui même (ambient occlusion).
- C'est à dire que certaines parties du modèle en cache d'autre, ce qui crée
- des zones plus sombres que les autres.
+Nous avons calculé l'ombrage que le modèle fait sur lui même (
+\shape italic
+ambient occlusion
+\shape default
+).
+ C'est à dire que certaines parties du modèle en cachent d'autres, ce qui
+ crée des zones plus sombres que les autres.
  Blender permet de projeter sur une texture ces zones d'ombre, que nous
  avons ensuite combinées au reste de la texture.
  Cela permet d'avoir un peu plus de réalisme pour un coût complètement nul
@@ -275,9 +305,9 @@ Un modèle haute résolution du quadricoptère (Quadri.high), qui n'est pas
 \end_layout
 
 \begin_layout Itemize
-Un modèle ultra-simplifié du quadricoptère (32 points, 30 faces), qui va
- être utilisé comme modèle de collision pour le moteur physique (non actif
- actuellement).
+Un modèle ultra-simplifié du quadricoptère (32 points, 30 faces), qui est
+ utilisé comme modèle de collision pour le moteur physique (non actif actuelleme
+nt).
 \end_layout
 
 \begin_layout Section
@@ -290,33 +320,25 @@ Principe global
 
 \begin_layout Standard
 Afin de pouvoir donner son comportement au modèle dans le mode de jeu de
- Blender, il a fallu définir plusieurs types d'objets sur notre modèle de
- quadricoptère.
+ Blender™, il a fallu définir plusieurs types d'objets sur notre modèle
+ de quadricoptère.
 \end_layout
 
 \begin_layout Itemize
 les 
-\begin_inset Quotes eld
-\end_inset
-
+\shape italic
 sensors
-\begin_inset Quotes erd
-\end_inset
-
+\shape default
  qui détectent une action sur une entrée et génèrent un évènement.
  Dans notre cas cela correspond aux touches du clavier, ou à un joystick.
 \end_layout
 
 \begin_layout Itemize
 les 
-\begin_inset Quotes eld
-\end_inset
-
+\shape italic
 controller
-\begin_inset Quotes erd
-\end_inset
-
-  qui sont le plus souvent des expressions logiques (OR, NAND...) faisant la
+\shape default
+ qui sont le plus souvent des expressions logiques (OR, NAND...) faisant la
  liaison entre les sensor et les controller.
  Dans notre cas, la complexité du comportement nous a poussé à utiliser
  des scripts Python en tant que controller.
@@ -324,13 +346,9 @@ controller
 
 \begin_layout Itemize
 les 
-\begin_inset Quotes eld
-\end_inset
-
+\shape italic
 actuators
-\begin_inset Quotes erd
-\end_inset
-
+\shape default
  qui se chargent de modifier le modèle suivant les paramètres du controller.
  Dans notre cas, ils sont au nombre de 4, un pour chaque moteur du quadricoptère.
 \end_layout
@@ -338,38 +356,39 @@ actuators
 \begin_layout Standard
 Ces différents éléments sont destinés à être reliés entre eux suivant le
  comportement que l'on souhaite définir.
+ Petite précision sur les deux 
+\shape italic
+sensors
+\shape default
+ 
+\begin_inset Quotes fld
+\end_inset
+
+Always
+\begin_inset Quotes frd
+\end_inset
+
+ visiblent sur l'image ci-dessous.
+ Le premier est utilisé pour lire le script Python de manière périodique.
+ Il est utile dans le cas où l'utilisateur controle le quadricoptère avec
+ le joystick puisque celui ci ne transmet que continue les valeurs de ses
+ axes (et donc aucun évènement du type 
+\begin_inset Quotes fld
+\end_inset
+
+touche A pressée
+\begin_inset Quotes frd
+\end_inset
+
+).
 \end_layout
 
 \begin_layout Standard
-A noter également que nous avons deux 
-\begin_inset Quotes eld
-\end_inset
-
-sensor
-\begin_inset Quotes erd
-\end_inset
-
- always.
- Le premier est relié au script python et permet un déclenchement périodique
- du script est utilisé dans pour l'utilisation du Joystick puisque celui-ci
- n'envoie aucun élément mais que les valeurs de ces axes/boutons.
- Le deuxième est relié directement aux 
-\begin_inset Quotes eld
-\end_inset
-
-actuators
-\begin_inset Quotes erd
-\end_inset
-
- via un controller and de façon à activer les 
-\begin_inset Quotes eld
-\end_inset
-
-actuators
-\begin_inset Quotes erd
-\end_inset
-
- de façon permanente.
+Le deuxième est relié directement aux 4 
+\shape italic
+actuator 
+\shape default
+afin d'activir les 4 moteurs en permanence.
 \end_layout
 
 \begin_layout Standard
@@ -407,15 +426,15 @@ Une qui détecte une pression sur une des 4 touches et qui incrémente la
 
 \begin_layout Standard
 La deuxième partie consiste à affecter les 4 forces au modèle.
- Il faut préciser qu'avec Blender, toutes les forces s'appliquent, par défaut,
- au centre de gravité de l'objet considéré.
- Pour remédier à ce problème nous appliquons également à cet endroit du
- script les moments qui sont nécessaires pour 
-\begin_inset Quotes eld
+ Il faut préciser qu'avec Blender™, toutes les forces s'appliquent, par
+ défaut, au centre de gravité de l'objet considéré.
+ Pour remédier à ce problème nous appliquons les moments qui sont nécessaires
+ pour 
+\begin_inset Quotes fld
 \end_inset
 
 déplacer
-\begin_inset Quotes erd
+\begin_inset Quotes frd
 \end_inset
 
  la force au point qui nous intéresse (en l'occurrence la position où se
@@ -438,7 +457,8 @@ En effet, nous avons dans ce cas 8 autres touches pour piloter le quadricoptère
 \end_layout
 
 \begin_layout Standard
-Ainsi on offre la possibilité à l'utilisateur du décollage, tangage et lacet.
+Ainsi on offre la possibilité de tangage et de lacet directement via une
+ touche.
 \end_layout
 
 \begin_layout Subsection
@@ -446,23 +466,29 @@ Joystick
 \end_layout
 
 \begin_layout Standard
-Le comportement via Joystick est légèrement différent de celui au clavier.
+Le comportement via joystick est légèrement différent de celui au clavier.
 \end_layout
 
 \begin_layout Standard
-En effet, comme précisé précédemment, le Joystick n'envoie pas directement
+En effet, comme précisé précédemment, le joystick n'envoie pas directement
  des évènements mais juste un tableau de 4 valeurs correspondant aux valeurs
  des axes (3 axes de la manette plus l'axe de la molette des gaz).
 \end_layout
 
 \begin_layout Standard
-On a donc ajouté un sensor always qui permet de lire en continue les valeurs
- envoyées par le joystick.
-\end_layout
-
-\begin_layout Standard
-Notons également deux points importants de ce comportement.
+On a donc ajouté un 
+\shape italic
+sensor
+\shape default
  
+\begin_inset Quotes fld
+\end_inset
+
+Always
+\begin_inset Quotes frd
+\end_inset
+
+ qui permet de lire en continue les valeurs envoyées par le joystick.
 \end_layout
 
 \begin_layout Subsubsection
@@ -470,15 +496,15 @@ Zone morte
 \end_layout
 
 \begin_layout Standard
-Nous avons définie une 
-\begin_inset Quotes eld
+Nous avons définit une 
+\begin_inset Quotes fld
 \end_inset
 
 zone morte
-\begin_inset Quotes erd
+\begin_inset Quotes frd
 \end_inset
 
- , qui permet de rendre le Joystick moins sensible aux variations minimum.
+ , qui permet de rendre le Joystick moins sensible aux variations minimes.
  Cette sensibilité peut être modifiée via la constante THRESHOLD (il est
  à noter que la position d'un axe va de -32768 à 32767).
 \end_layout
@@ -529,7 +555,7 @@ Le HUD (head's up display) que nous avons implémenté est constitué d'un
 \begin_layout Standard
 \align center
 \begin_inset Graphics
-	filename /home/michael/Bureau/projet quadricoptère/HUD/fondaltimetre.png
+	filename fondaltimetre.png
 	lyxscale 50
 	scale 50
 	rotateOrigin center
@@ -538,7 +564,7 @@ Le HUD (head's up display) que nous avons implémenté est constitué d'un
 
  
 \begin_inset Graphics
-	filename /home/michael/Bureau/projet quadricoptère/HUD/aiguille.png
+	filename aiguille.png
 	lyxscale 50
 	scale 50
 	rotateOrigin center
@@ -588,36 +614,48 @@ Nous avons donc:
 \end_layout
 
 \begin_layout Itemize
-Un sensor 
-\begin_inset Quotes eld
+Un 
+\shape italic
+sensor
+\shape default
+ 
+\begin_inset Quotes fld
 \end_inset
 
 Always
-\begin_inset Quotes erd
+\begin_inset Quotes frd
 \end_inset
 
  qui active le script à intervalles réguliers
 \end_layout
 
 \begin_layout Itemize
-Un controller 
-\begin_inset Quotes eld
+Un 
+\shape italic
+controller
+\shape default
+ 
+\begin_inset Quotes fld
 \end_inset
 
 Python
-\begin_inset Quotes erd
+\begin_inset Quotes frd
 \end_inset
 
  avec notre script
 \end_layout
 
 \begin_layout Itemize
-Un actuator 
-\begin_inset Quotes eld
+Un 
+\shape italic
+actuator
+\shape default
+ 
+\begin_inset Quotes fld
 \end_inset
 
 Motion
-\begin_inset Quotes erd
+\begin_inset Quotes frd
 \end_inset
 
  qui ne sert strictement à rien, si ce n'est d'avoir un graphe valide (sinon
