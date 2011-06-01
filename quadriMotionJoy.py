@@ -18,7 +18,7 @@ def main():
     
     # Mode Basic, Advanced, Joystick:
     # Pour le moment, ne change que la force de chute quand aucune touche n'est appuyee
-    MODE = "Joystick"
+    MODE = "Advanced"
     
     # INIT
     cont = bge.logic.getCurrentController()

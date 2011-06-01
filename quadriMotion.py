@@ -124,6 +124,17 @@ def main():
             ForceFrontRight = 0.8 * GRAVITY/4
             ForceRearLeft = 0.8 * GRAVITY/4
             ForceRearRight = 0.8 * GRAVITY/4
+            
+            euler = own.localOrientation.to_euler()
+            ForceFrontLeft -= euler.x * FORCE_TANGAGE
+            ForceFrontRight -= euler.x * FORCE_TANGAGE
+            ForceRearLeft +=  euler.x * FORCE_TANGAGE
+            ForceRearRight += euler.x * FORCE_TANGAGE
+            
+            ForceFrontLeft -= euler.y * FORCE_TANGAGE
+            ForceFrontRight += euler.y * FORCE_TANGAGE
+            ForceRearLeft -=  euler.y * FORCE_TANGAGE
+            ForceRearRight += euler.y * FORCE_TANGAGE 
     
     # FINAL MOTION
     MotFrontLeft.force = [0, 0, ForceFrontLeft]
