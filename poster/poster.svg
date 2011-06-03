@@ -23,9 +23,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.49497475"
-     inkscape:cx="1525.7614"
-     inkscape:cy="1019.8179"
+     inkscape:zoom="0.35"
+     inkscape:cx="996.79418"
+     inkscape:cy="1653.333"
      inkscape:document-units="px"
      inkscape:current-layer="layer3"
      showgrid="false"
@@ -41,7 +41,8 @@
      inkscape:showpageshadow="true"
      showguides="true"
      inkscape:guide-bbox="true"
-     inkscape:snap-object-midpoints="true">
+     inkscape:snap-object-midpoints="true"
+     inkscape:snap-nodes="false">
     <sodipodi:guide
        orientation="0,1"
        position="0,106.29921"
@@ -406,6 +407,20 @@
        inkscape:vp_z="1 : 0.5 : 1"
        inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
        id="perspective3239" />
+    <inkscape:perspective
+       id="perspective3871"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective3933"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
   </defs>
   <metadata
      id="metadata7">
@@ -1062,14 +1077,19 @@
          x="1689.2811"
          id="tspan5317"
          sodipodi:role="line">Aide au pilotage</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 1833.4269,2950.3479 -221.2234,0 -194.8807,-83.0896"
+       id="path3939"
+       transform="translate(0,-2.7734375e-4)" />
     <text
        id="text5319"
-       y="2951.094"
-       x="1868.7822"
+       y="2941.3579"
+       x="1626.3456"
        style="font-size:40px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
        xml:space="preserve"><tspan
-         y="2951.094"
-         x="1868.7822"
+         y="2941.3579"
+         x="1626.3456"
          id="tspan5321"
          sodipodi:role="line">Cadrans</tspan></text>
     <text
@@ -1130,18 +1150,24 @@
          sodipodi:role="line">Garde le quadricoptère à l'horizontale</tspan></text>
     <text
        id="text5351"
-       y="2987.0811"
-       x="1870.8408"
+       y="2977.345"
+       x="1628.4042"
        style="font-size:24px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
        xml:space="preserve"><tspan
-         y="2987.0811"
-         x="1870.8408"
+         y="2977.345"
+         x="1628.4042"
          id="tspan5353"
          sodipodi:role="line">Vitesse</tspan><tspan
          id="tspan5355"
-         y="3017.0811"
-         x="1870.8408"
+         y="3007.345"
+         x="1628.4042"
          sodipodi:role="line">Altitude</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 277.14286,2895.3656 525.71428,0 614.46566,199.9942"
+       id="path3941"
+       transform="translate(0,-2.7734375e-4)"
+       sodipodi:nodetypes="ccc" />
     <text
        id="text5357"
        y="2924.9097"
@@ -3744,5 +3770,12 @@ cgAAAABJRU5ErkJggg==
        id="image3227"
        x="250.61952"
        y="2359.6646" />
+    <image
+       y="2688.9224"
+       x="1816.0531"
+       id="image3935"
+       height="500.62708"
+       width="893.37708"
+       xlink:href="file:///home/michael/Bureau/projet%20quadricopt%C3%A8re/poster/hud.png" />
   </g>
 </svg>
