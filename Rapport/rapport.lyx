@@ -102,7 +102,15 @@ Introduction
 
 \begin_layout Standard
 Dans le cadre de notre projet nous avons été amenés à modéliser en 3D un
- quadricoptère sous Blender™.
+ 
+\begin_inset CommandInset href
+LatexCommand href
+name "quadricoptère de la marque Parrot"
+target "http://ardrone.parrot.com/parrot-ar-drone/fr/"
+
+\end_inset
+
+™ sous Blender™.
  Ce document a pour but d'expliciter les différentes étapes que nous avons
  suivi afin de réaliser ce travail.
  
@@ -757,6 +765,15 @@ aiguille.localOrientation = Matrix.Rotation(-value / 10.0, 4, 'Z').to_3x3()
 
 \begin_layout Section
 Conclusion
+\end_layout
+
+\begin_layout Standard
+Notre projet a permis de valider la solution technique de Blender pour la
+ simulation, autant par ses capacités à fournir un affichage correct et
+ fluide, qu'une simulation physique simple, correcte et extensible.
+ Un future projet pour implementer dans le script de contrôle en python
+ d'un vrai modèle et d'asservissement devrait aboutir à un comportement
+ dans le moteur de jeu proche de la réalité.
 \end_layout
 
 \end_body
