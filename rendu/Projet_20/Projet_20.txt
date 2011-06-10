@@ -6,6 +6,7 @@
 <CLE>Blender, Quadricopètre, 3D, Modélisation, Python, Bullet, Game Engine, Blender Game, Joystick</CLE>
 <SUJET>Simulation d'un quadricoptère avec Blender</SUJET>
 <REALISATION>
+Le but de ce projet est de fournir une simulation d'<a href="http://ardrone.parrot.com/parrot-ar-drone/fr/">AR.Drone de la marque Parrot</a>, pour permettre à un futur projet d'implémenter un ensemble d'asservissement pour le contrôle du modèle virtuel.
 La première étape du projet fut la réalisation d'un modèle 3D du quadricoptère. Le modèle étant symétrique, nous avons notamment utilisé un outil de miroir qui génère automatiquement la moitié du modèle. Nous nous sommes inspirés de différentes images représentant le drone AR Parrot afin de construire un modèle réaliste.
 <FIGURE>
 	<LEGENDE>Outil miroir de Blender</LEGENDE>
